@@ -4,15 +4,20 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR / ".env"
+EXAMPLE_ENV_PATH = BASE_DIR / ".env.example"
 
-load_dotenv(dotenv_path=ENV_PATH)
+# Cargar .env si existe; si no (ej. en Vercel donde .env está en .gitignore), usar .env.example
+if ENV_PATH.exists():
+    load_dotenv(dotenv_path=ENV_PATH)
+elif EXAMPLE_ENV_PATH.exists():
+    load_dotenv(dotenv_path=EXAMPLE_ENV_PATH)
 
 
 def get_required_env(key: str) -> str:
     value = os.getenv(key)
     if value is None or value.strip() == "":
         raise RuntimeError(
-            f"Variable de entorno obligatoria '{key}' no definida en .env"
+            f"Variable de entorno obligatoria '{key}' no definida en .env ni en .env.example"
         )
     return value.strip()
 
@@ -30,4 +35,3 @@ def get_public_config() -> dict:
         "default_volume": DEFAULT_VOLUME,
         "default_voice": DEFAULT_VOICE,
     }
-

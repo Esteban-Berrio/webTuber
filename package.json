@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Undertale Dialog Box app with Web Audio and Sprites",
   "scripts": {
-    "build": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify",
+    "build": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify && node -e \"const fs=require('fs'); fs.mkdirSync('public', {recursive:true}); fs.copyFileSync('app/templates/index.html', 'public/index.html'); fs.cpSync('app/static', 'public/static', {recursive:true});\"",
     "build:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify",
     "watch:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --watch"
   },

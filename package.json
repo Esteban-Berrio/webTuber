@@ -1,0 +1,12 @@
+{
+  "name": "undertale-dialog-box",
+  "version": "1.0.0",
+  "description": "Undertale Dialog Box app with Web Audio and Sprites",
+  "scripts": {
+    "build:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify",
+    "watch:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

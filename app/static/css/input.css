@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('/static/fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}
+
+@keyframes sprite-hop {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-16px) scale(1.08);
+  }
+  50% {
+    transform: translateY(4px) scale(0.96);
+  }
+  75% {
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.sprite-hop {
+  animation: sprite-hop 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

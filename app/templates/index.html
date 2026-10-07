@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-black">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undertale Dialog Box</title>
+  <link rel="stylesheet" href="/static/css/output.css">
+</head>
+<body class="min-h-full bg-black text-white font-mono flex flex-col items-center justify-start p-4 sm:p-8 gap-6 select-none">
+
+  <header class="text-center">
+    <h1 class="font-undertale text-xl sm:text-2xl text-white tracking-widest uppercase">
+      Undertale Dialog Box
+    </h1>
+  </header>
+
+  <!-- Caja de diálogo clásica estilo Undertale -->
+  <main class="w-full max-w-3xl">
+    <section 
+      class="w-full min-h-[230px] bg-black border-4 border-white p-5 sm:p-6 flex flex-row gap-5 items-center box-border shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+      aria-label="Caja de diálogo"
+    >
+      <!-- Ranura del sprite agrandada a la izquierda -->
+      <div 
+        id="sprite-container" 
+        class="w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] shrink-0 border-2 border-dashed border-neutral-700 bg-neutral-950 flex items-center justify-center overflow-hidden transition-all duration-200"
+      >
+        <img 
+          id="dialog-sprite-img" 
+          alt="Sprite del personaje" 
+          class="w-full h-full object-contain pixelated origin-bottom hidden" 
+        />
+        <div id="sprite-placeholder" class="text-[10px] font-undertale text-neutral-500 text-center p-2 leading-tight">
+          [neutral]
+        </div>
+      </div>
+
+      <!-- Texto del diálogo a la derecha -->
+      <div 
+        id="dialog-text" 
+        class="flex-1 font-undertale text-base sm:text-lg leading-loose text-white min-h-[140px] whitespace-pre-wrap break-words flex items-center"
+        aria-live="polite"
+      ></div>
+    </section>
+  </main>
+
+  <!-- Panel de controles -->
+  <section class="w-full max-w-3xl bg-neutral-950 border border-neutral-800 p-5 rounded-sm flex flex-col gap-4 text-sm">
+    <div class="flex flex-col gap-1.5">
+      <label for="text-input" class="font-bold text-neutral-300">
+        Texto del diálogo (Usa etiquetas como {feliz}, {enojado}, {triste}, {sorprendido}):
+      </label>
+      <textarea 
+        id="text-input" 
+        rows="3"
+        class="w-full bg-black text-white border-2 border-neutral-700 p-3 font-mono text-sm focus:border-white focus:outline-none resize-y"
+        placeholder="Escribe el diálogo aquí..."
+      >{feliz}¡Hola! ¿Cómo estás?... {enojado}¡No te acerques!{triste} pensé que éramos amigos.</textarea>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex flex-wrap gap-3">
+      <button 
+        id="btn-speak" 
+        type="button"
+        class="bg-white text-black font-undertale text-xs px-5 py-2.5 uppercase font-bold hover:bg-yellow-300 hover:text-black active:translate-y-0.5 transition-colors disabled:bg-neutral-700 disabled:text-neutral-500 disabled:cursor-not-allowed"
+      >
+        Hablar
+      </button>
+      <button 
+        id="btn-skip" 
+        type="button" 
+        disabled
+        class="bg-neutral-800 text-white font-undertale text-xs px-5 py-2.5 uppercase font-bold hover:bg-yellow-300 hover:text-black active:translate-y-0.5 transition-colors disabled:bg-neutral-800 disabled:text-neutral-600 disabled:cursor-not-allowed"
+      >
+        Saltar
+      </button>
+    </div>
+
+    <!-- Parámetros de velocidad, volumen, voz y tamaño de sprite -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2 border-t border-neutral-900">
+      <div class="flex flex-col gap-1">
+        <div class="flex justify-between items-center text-xs text-neutral-400">
+          <label for="speed-slider">Velocidad</label>
+          <span id="speed-value" class="text-white font-mono">40 ms</span>
+        </div>
+        <input 
+          id="speed-slider" 
+          type="range" 
+          min="10" 
+          max="150" 
+          step="5" 
+          class="accent-yellow-400 cursor-pointer"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="flex justify-between items-center text-xs text-neutral-400">
+          <label for="volume-slider">Volumen</label>
+          <span id="volume-value" class="text-white font-mono">50%</span>
+        </div>
+        <input 
+          id="volume-slider" 
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.05" 
+          class="accent-yellow-400 cursor-pointer"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="voice-select" class="text-xs text-neutral-400">Preset de voz</label>
+        <select 
+          id="voice-select"
+          class="bg-black text-white border border-neutral-700 px-3 py-1.5 text-xs font-mono focus:border-white focus:outline-none cursor-pointer"
+        >
+          <option value="grave">Grave (Sans/Asgore)</option>
+          <option value="media">Media (Toriel/Estándar)</option>
+          <option value="aguda">Aguda (Papyrus/Alphys)</option>
+          <option value="robotica">Robótica (Mettaton)</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="sprite-size-select" class="text-xs text-neutral-400">Tamaño Sprite</label>
+        <select 
+          id="sprite-size-select"
+          class="bg-black text-white border border-neutral-700 px-3 py-1.5 text-xs font-mono focus:border-white focus:outline-none cursor-pointer"
+        >
+          <option value="140">Mediano (140px)</option>
+          <option value="180" selected>Grande (180px)</option>
+          <option value="220">Gigante (220px)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Cargador de Sprites locales -->
+    <div class="pt-3 border-t border-neutral-900 flex flex-col gap-2">
+      <div class="flex justify-between items-baseline">
+        <span class="font-bold text-xs uppercase tracking-wide text-neutral-300">
+          Carga de sprites locales (En memoria, no sube al servidor)
+        </span>
+        <span class="text-[11px] text-neutral-500">Fallback automático a neutral</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+        <div class="bg-neutral-900/60 p-2 border border-neutral-800 rounded flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-neutral-200">Neutral (Base):</span>
+            <span id="sprite-preview-neutral" class="text-[10px] text-neutral-500">Sin imagen</span>
+          </div>
+          <input type="file" id="sprite-input-neutral" accept="image/*" class="text-[11px] text-neutral-400 file:mr-2 file:py-0.5 file:px-2 file:border-0 file:bg-neutral-800 file:text-white file:text-[10px] hover:file:bg-neutral-700 cursor-pointer">
+        </div>
+
+        <div class="bg-neutral-900/60 p-2 border border-neutral-800 rounded flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-neutral-200">Feliz:</span>
+            <span id="sprite-preview-feliz" class="text-[10px] text-neutral-500">Sin imagen</span>
+          </div>
+          <input type="file" id="sprite-input-feliz" accept="image/*" class="text-[11px] text-neutral-400 file:mr-2 file:py-0.5 file:px-2 file:border-0 file:bg-neutral-800 file:text-white file:text-[10px] hover:file:bg-neutral-700 cursor-pointer">
+        </div>
+
+        <div class="bg-neutral-900/60 p-2 border border-neutral-800 rounded flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-neutral-200">Enojado:</span>
+            <span id="sprite-preview-enojado" class="text-[10px] text-neutral-500">Sin imagen</span>
+          </div>
+          <input type="file" id="sprite-input-enojado" accept="image/*" class="text-[11px] text-neutral-400 file:mr-2 file:py-0.5 file:px-2 file:border-0 file:bg-neutral-800 file:text-white file:text-[10px] hover:file:bg-neutral-700 cursor-pointer">
+        </div>
+
+        <div class="bg-neutral-900/60 p-2 border border-neutral-800 rounded flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-neutral-200">Triste:</span>
+            <span id="sprite-preview-triste" class="text-[10px] text-neutral-500">Sin imagen</span>
+          </div>
+          <input type="file" id="sprite-input-triste" accept="image/*" class="text-[11px] text-neutral-400 file:mr-2 file:py-0.5 file:px-2 file:border-0 file:bg-neutral-800 file:text-white file:text-[10px] hover:file:bg-neutral-700 cursor-pointer">
+        </div>
+
+        <div class="bg-neutral-900/60 p-2 border border-neutral-800 rounded flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-neutral-200">Sorprendido:</span>
+            <span id="sprite-preview-sorprendido" class="text-[10px] text-neutral-500">Sin imagen</span>
+          </div>
+          <input type="file" id="sprite-input-sorprendido" accept="image/*" class="text-[11px] text-neutral-400 file:mr-2 file:py-0.5 file:px-2 file:border-0 file:bg-neutral-800 file:text-white file:text-[10px] hover:file:bg-neutral-700 cursor-pointer">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

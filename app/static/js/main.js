@@ -9,11 +9,21 @@ let soundEngine = null;
 let spriteManager = null;
 
 async function loadConfig() {
-  const response = await fetch('/api/config');
-  if (!response.ok) {
-    throw new Error(`Error HTTP: ${response.status}`);
+  try {
+    const response = await fetch('/api/config');
+    if (response.ok) {
+      return await response.json();
+    }
+    console.warn(`Aviso: /api/config respondio con status ${response.status}, usando valores de configuracion de respaldo.`);
+  } catch (err) {
+    console.warn('Aviso: no se pudo consultar /api/config, usando valores de respaldo:', err);
   }
-  return response.json();
+
+  return {
+    default_speed_ms: 40,
+    default_volume: 0.5,
+    default_voice: 'media',
+  };
 }
 
 function bindControlInputs(elements) {

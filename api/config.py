@@ -8,7 +8,7 @@ if str(ROOT_DIR) not in sys.path:
 from fastapi import FastAPI
 from app.config import get_public_config
 
-app = FastAPI(title="Undertale Dialog Box API")
+app = FastAPI(title="Undertale Dialog Box Config Endpoint")
 
 
 @app.get("/")
@@ -16,3 +16,4 @@ app = FastAPI(title="Undertale Dialog Box API")
 @app.get("/config")
 def read_config():
     return get_public_config()
+
